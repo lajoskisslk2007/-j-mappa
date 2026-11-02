@@ -1,5 +1,4 @@
 .game {
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,7 +37,7 @@
 }
 
 .score-card strong {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .score-x,
@@ -60,11 +59,13 @@
 }
 
 .status-x {
-  color: #1d4ed8;
+  color: #391dd8;
+  background: #dbeafe;
 }
 
 .status-o {
-  color: #be185d;
+  color: #be1818;
+  background: #fce7f3;
 }
 
 .game-timer {
@@ -76,6 +77,8 @@
 
 .board-row {
   display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .square {
@@ -96,15 +99,16 @@
 }
 
 .square-x {
-  color: #2563eb;
+  color: #3925eb;
 }
 
 .square-o {
-  color: #db2777;
+  color: #e91010;
 }
 
 .square:disabled {
   cursor: default;
+  background: #e2e8f0;  
 }
 
 .square.winning-square {
