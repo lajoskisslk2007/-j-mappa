@@ -69,8 +69,8 @@ export function Board() {
     setNextPlayer((currentPlayer) => (currentPlayer === "X" ? "O" : "X"));
 
     if (iswin || isDraw) {
-      const duration = Math.floor((Date.now() - startedAt.current) / 1000);
-      setElapsedSeconds(duration);
+      const ido= Math.floor((Date.now() - startedAt.current) / 1000);
+      setElapsedSeconds(ido);
       setTimerRunning(false);
       setScores((currentScores) => ({
         ...currentScores,
@@ -83,7 +83,7 @@ export function Board() {
           {
             id: Date.now(),
             winner: iswin,
-            duration,
+            duration: ido,
             playedAt: new Date().toLocaleString("hu-HU"),
           },
           ...currentHistory,
