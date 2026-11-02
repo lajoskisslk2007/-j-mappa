@@ -43,13 +43,13 @@
 .score-x,
 .history-x {
   background: #dbeafe;
-  color: #49d81d;
+  color: #1d30d8;
 }
 
 .score-o,
 .history-o {
   background: #fce7f3;
-  color: #49d81d;
+  color: #d81d1d;
 }
 
 .score-draw,
