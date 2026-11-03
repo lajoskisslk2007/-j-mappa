@@ -115,6 +115,14 @@
   background-color: #bbf7d0;
 }
 
+.square.last-move-square:not(.winning-square) {
+  background-color: #fef08a;
+}
+
+.square.last-move-square.winning-square {
+  box-shadow: inset 0 0 0 4px #f59e0b;
+}
+
 .game-actions {
   display: flex;
   gap: 0.6rem;

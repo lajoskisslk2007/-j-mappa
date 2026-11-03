@@ -69,8 +69,8 @@ export function Board() {
     setNextPlayer((currentPlayer) => (currentPlayer === "X" ? "O" : "X"));
 
     if (iswin || isDraw) {
-      const ido= Math.floor((Date.now() - startedAt.current) / 1000);
-      setElapsedSeconds(ido);
+      const duration = Math.floor((Date.now() - startedAt.current) / 1000);
+      setElapsedSeconds(duration);
       setTimerRunning(false);
       setScores((currentScores) => ({
         ...currentScores,
@@ -83,7 +83,7 @@ export function Board() {
           {
             id: Date.now(),
             winner: iswin,
-            duration: ido,
+            duration,
             playedAt: new Date().toLocaleString("hu-HU"),
           },
           ...currentHistory,
@@ -103,6 +103,11 @@ export function Board() {
     setMoves(previousMoves);
     setStatus(previousStatus);
     setNextPlayer(moves[moves.length - 1].player);
+    if (previousMoves.length === 0) {
+      setElapsedSeconds(0);
+      setTimerRunning(false);
+      startedAt.current = null;
+    }
   }
 
   function handlePlayAgain() {
@@ -153,6 +158,7 @@ export function Board() {
                   value={status[index]}
                   player={status[index]}
                   highlight={winningLine?.includes(index)}
+                  lastMove={moves.at(-1)?.index === index}
                   onSquareClick={() => handleClick(index)}
                 />
               );
@@ -186,7 +192,7 @@ export function Board() {
                   {index + 1}. {match.winner ? `${match.winner} nyert` : "Döntetlen"}
                 </span>
                 <time>{match.playedAt}</time>
-                <span>{String(Math.floor(match.ido / 60)).padStart(2, "0")}:{String(match.ido % 60).padStart(2, "0")}</span>
+                <span>{String(Math.floor(match.duration / 60)).padStart(2, "0")}:{String(match.duration % 60).padStart(2, "0")}</span>
               </li>
             ))}
           </ol>
