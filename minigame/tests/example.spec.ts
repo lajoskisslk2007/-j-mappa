@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('the game timer starts on the first move and resets for a new game', async ({ page }) => {
+test('az időmérő az első lépéskor indul, és új játéknál visszaáll', async ({ page }) => {
   await page.goto('/');
   const timer = page.locator('.game-timer');
   await expect(timer).toHaveText(/00:00/);

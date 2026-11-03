@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test('the board starts with nine empty, playable cells', async ({ page }) => {
+test('a tábla kilenc üres, használható mezővel indul', async ({ page }) => {
   const squares = page.locator('.square');
   await expect(squares).toHaveCount(9);
   for (const square of await squares.all()) {
@@ -15,7 +15,7 @@ test('the board starts with nine empty, playable cells', async ({ page }) => {
   await expect(page.locator('.game-status')).toHaveText('Következő: X');
 });
 
-test('players alternate turns and occupied cells cannot be played again', async ({ page }) => {
+test('a játékosok felváltva lépnek, a foglalt mező nem választható újra', async ({ page }) => {
   const squares = page.locator('.square');
   await squares.nth(0).click();
   await expect(squares.nth(0)).toHaveText('X');
@@ -27,7 +27,7 @@ test('players alternate turns and occupied cells cannot be played again', async 
   await expect(page.locator('.game-status')).toHaveText('Következő: X');
 });
 
-test('highlights the latest move and updates the highlight on the next move', async ({ page }) => {
+test('kiemeli a legutóbbi lépést, majd a következő lépésnél áthelyezi a kiemelést', async ({ page }) => {
   const squares = page.locator('.square');
   await squares.nth(0).click();
   await expect(squares.nth(0)).toHaveClass(/last-move-square/);
@@ -38,7 +38,7 @@ test('highlights the latest move and updates the highlight on the next move', as
   await expect(squares.nth(4)).toHaveClass(/last-move-square/);
 });
 
-test('announces an X win, highlights the winning line, and blocks further moves', async ({ page }) => {
+test('jelzi X győzelmét, kiemeli a nyerő sort, és megakadályozza a további lépéseket', async ({ page }) => {
   const squares = page.locator('.square');
   for (const index of [0, 3, 1, 4, 2]) {
     await squares.nth(index).click();
@@ -55,7 +55,7 @@ test('announces an X win, highlights the winning line, and blocks further moves'
   await expect(page.locator('.score-x strong')).toHaveText('1');
 });
 
-test('announces an O win and increments the O score', async ({ page }) => {
+test('jelzi O győzelmét, és növeli O győzelmeinek számát', async ({ page }) => {
   const squares = page.locator('.square');
   for (const index of [0, 3, 1, 4, 8, 5]) {
     await squares.nth(index).click();
@@ -68,7 +68,7 @@ test('announces an O win and increments the O score', async ({ page }) => {
   }
 });
 
-test('announces a draw and increments the draw score', async ({ page }) => {
+test('jelzi a döntetlent, és növeli a döntetlenek számát', async ({ page }) => {
   const squares = page.locator('.square');
   for (const index of [0, 1, 2, 4, 3, 5, 7, 6, 8]) {
     await squares.nth(index).click();
@@ -79,7 +79,7 @@ test('announces a draw and increments the draw score', async ({ page }) => {
   await expect(page.locator('.history li').first()).toContainText('Döntetlen');
 });
 
-test('starts a new game without clearing scores or completed-match history', async ({ page }) => {
+test('új játékot indít az eredmények és a meccselőzmények megtartásával', async ({ page }) => {
   const squares = page.locator('.square');
   for (const index of [0, 3, 1, 4, 2]) {
     await squares.nth(index).click();
@@ -95,7 +95,7 @@ test('starts a new game without clearing scores or completed-match history', asy
   }
 });
 
-test('undo restores the previous turn and latest-move highlight', async ({ page }) => {
+test('a visszavonás visszaállítja az előző állást és a legutóbbi lépés kiemelését', async ({ page }) => {
   const squares = page.locator('.square');
   await squares.nth(0).click();
   await squares.nth(1).click();
