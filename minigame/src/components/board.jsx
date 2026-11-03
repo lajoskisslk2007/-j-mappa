@@ -56,8 +56,8 @@ export function Board() {
         newStatus[first] === newStatus[second] &&
         newStatus[first] === newStatus[third],
     );
-    const gameWinner = newWinningLine ? newStatus[newWinningLine[0]] : null;
-    const gameIsDraw = !gameWinner && newStatus.every(Boolean);
+    const iswin = newWinningLine ? newStatus[newWinningLine[0]] : null;
+    const isDraw = !iswin && newStatus.every(Boolean);
 
     if (startedAt.current === null) {
       startedAt.current = Date.now();
@@ -68,21 +68,21 @@ export function Board() {
     setMoves(newMoves);
     setNextPlayer((currentPlayer) => (currentPlayer === "X" ? "O" : "X"));
 
-    if (gameWinner || gameIsDraw) {
+    if (iswin || isDraw) {
       const duration = Math.floor((Date.now() - startedAt.current) / 1000);
       setElapsedSeconds(duration);
       setTimerRunning(false);
       setScores((currentScores) => ({
         ...currentScores,
-        ...(gameWinner
-          ? { [gameWinner]: currentScores[gameWinner] + 1 }
+        ...(iswin
+          ? { [iswin]: currentScores[iswin] + 1 }
           : { draws: currentScores.draws + 1 }),
       }));
       setHistory((currentHistory) =>
         [
           {
             id: Date.now(),
-            winner: gameWinner,
+            winner: iswin,
             duration,
             playedAt: new Date().toLocaleString("hu-HU"),
           },
@@ -103,6 +103,11 @@ export function Board() {
     setMoves(previousMoves);
     setStatus(previousStatus);
     setNextPlayer(moves[moves.length - 1].player);
+    if (previousMoves.length === 0) {
+      setElapsedSeconds(0);
+      setTimerRunning(false);
+      startedAt.current = null;
+    }
   }
 
   function handlePlayAgain() {
@@ -153,6 +158,7 @@ export function Board() {
                   value={status[index]}
                   player={status[index]}
                   highlight={winningLine?.includes(index)}
+                  lastMove={moves.at(-1)?.index === index}
                   onSquareClick={() => handleClick(index)}
                 />
               );
@@ -168,7 +174,7 @@ export function Board() {
           aria-label="Utolsó lépés visszavonása"
           title="Utolsó lépés visszavonása"
         >
-          ↶ Vissza
+           Vissza
         </button>
         <button className="reset-button" onClick={handlePlayAgain}>
           Új játék
