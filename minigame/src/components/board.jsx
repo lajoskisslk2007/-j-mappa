@@ -103,6 +103,11 @@ export function Board() {
     setMoves(previousMoves);
     setStatus(previousStatus);
     setNextPlayer(moves[moves.length - 1].player);
+    if (previousMoves.length === 0) {
+      setElapsedSeconds(0);
+      setTimerRunning(false);
+      startedAt.current = null;
+    }
   }
 
   function handlePlayAgain() {
@@ -153,6 +158,7 @@ export function Board() {
                   value={status[index]}
                   player={status[index]}
                   highlight={winningLine?.includes(index)}
+                  lastMove={moves.at(-1)?.index === index}
                   onSquareClick={() => handleClick(index)}
                 />
               );
