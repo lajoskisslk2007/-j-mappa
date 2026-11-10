@@ -1,16 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Square } from "./square";
-
-const WIN_POSITIONS = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
+import { getGameState } from "../utils/gameUtils";
 
 export function Board() {
   const [status, setStatus] = useState(Array(9).fill(null));
@@ -21,15 +11,7 @@ export function Board() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const startedAt = useRef(null);
-  const winningLine = WIN_POSITIONS.find(
-    ([first, second, third]) =>
-      status[first] &&
-      status[first] === status[second] &&
-      status[first] === status[third],
-  );
-  const winner = winningLine ? status[winningLine[0]] : null;
-  const isDraw = !winner && status.every(Boolean);
-  const isGameOver = winner || isDraw;
+  const { winningLine, winner, isDraw, isGameOver } = getGameState(status);
 
   useEffect(() => {
     if (!timerRunning) return undefined;
@@ -50,14 +32,7 @@ export function Board() {
       cellIndex === index ? nextPlayer : value,
     );
     const newMoves = [...moves, { index, player: nextPlayer }];
-    const newWinningLine = WIN_POSITIONS.find(
-      ([first, second, third]) =>
-        newStatus[first] &&
-        newStatus[first] === newStatus[second] &&
-        newStatus[first] === newStatus[third],
-    );
-    const iswin = newWinningLine ? newStatus[newWinningLine[0]] : null;
-    const isDraw = !iswin && newStatus.every(Boolean);
+    const { winner: iswin, isDraw } = getGameState(newStatus);
 
     if (startedAt.current === null) {
       startedAt.current = Date.now();
